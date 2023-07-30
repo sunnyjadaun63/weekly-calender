@@ -93,6 +93,7 @@ select {
   border-radius: 4px;
   text-align: center;
   display: grid;
+  transition: 0.4s ease all;
   grid-template-columns: repeat(11,2fr);
 }
 .calendar .day-name {
@@ -134,4 +135,44 @@ select {
   .calendar {
     grid-template-columns: 1fr;
   }
+}
+
+
+.day-name.past-day {
+  opacity: 0.5;
+  position: relative;
+}
+.day-name.past-day::before {
+  content: "";
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background-color: #c93e3e;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  border: 3px solid rgb(255 255 255);
+}
+p.passed-date {
+  color: #da8787;
+}
+
+.calendar div:hover {
+  background-color: #f4f4f4;
+}
+
+label {
+  margin-right: 10px;
+  display: flex;
+  gap: 3px;
+}
+input[type="checkbox" i] {
+  background-color: initial;
+  position: relative;
+  cursor: default;
+  appearance: auto;
+  box-sizing: border-box;
+  margin: 3px 3px 3px 4px;
+  padding: initial;
+  border: blue;
 }

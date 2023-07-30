@@ -166,7 +166,7 @@ const App = () => {
                   {new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + dayIndex + 1).toLocaleDateString()}
                 </p>
               </div>
-              {isPastDay(dayIndex) ? (<p className="passed-date">Past</p>) : (
+              {isPastDay(dayIndex) ? (<p className="passed-date">Events Already Done*</p>) : (
                 <div className="time-slots">
                   {timeSlots.map((timeSlot, slotIndex) => {
                     const selectedDate = new Date(currentDate);
