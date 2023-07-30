@@ -1,0 +1,137 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* App.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+button {
+  color: #006fc6;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.timezone {
+  display: flex;
+ 
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+label {
+  margin-right: 10px;
+}
+
+select {
+  padding: 6px;
+}
+
+.calendar {
+  display: grid;
+  /* grid-gap: 10px; */
+}
+
+.calendar div {
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(11,2fr);
+}
+.calendar .day-name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  color: #c93e3e;
+  padding-top: 17px;
+  background: #e1e1e1;
+}
+.calendar .day-name p {
+  margin: 5px;
+  color: #838282;
+}
+
+/* .calendar div:nth-child(2n) {
+  background-color: #f9f9f9;
+  display: grid;
+  grid-template-columns: repeat(8,2fr);
+}
+
+.calendar div:nth-child(1) {
+  font-weight: bold;
+}
+
+.calendar div:nth-child(3), .calendar div:nth-child(4), .calendar div:nth-child(5) {
+  display: grid;
+  grid-template-columns: repeat(8,1fr);
+} */
+
+.calendar div:nth-child(3) input,
+.calendar div:nth-child(4) input,
+.calendar div:nth-child(5) input {
+  margin: 4px;
+}
+
+@media screen and (max-width: 600px) {
+  .calendar {
+    grid-template-columns: 1fr;
+  }
+}
