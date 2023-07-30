@@ -3,7 +3,7 @@ import "./App.css";
 
 const App = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedTimezone, setSelectedTimezone] = useState("UTC-5");
+  const [selectedTimezone, setSelectedTimezone] = useState();
   const [eventsData, setEventsData] = useState([]);
 
   const handlePreviousWeek = () => {
@@ -24,16 +24,33 @@ const App = () => {
 
   const handleTimezoneChange = (e) => {
     setSelectedTimezone(e.target.value);
+    console.log(selectedTimezone,"selectedTimezone")
+   
+      
+    }
+   
     
   };
 
   const daysOfWeek = ["Sun","Mon", "Tue", "Wed", "Thu", "Fri","Sat"];
 
-  const timeSlots = Array.from({ length: 31 }, (_, i) => {
-    const hour = Math.floor(i / 2) + 8;
-    const minute = i % 2 === 0 ? "00" : "30";
-    return `${hour}:${minute}`;
-  });
+  // Determine the time slots based on the selected timezone
+  let timeSlots;
+  if (selectedTimezone === "UTC+0") {
+    timeSlots = Array.from({ length: 31 }, (_, i) => {
+      const hour = Math.floor(i / 2) + 8;
+      const minute = i % 2 === 0 ? "00" : "30";
+      return `${hour}:${minute}`;
+    });
+  } else {
+    timeSlots = Array.from({ length: 31 }, (_, i) => {
+      const hour = Math.floor(i / 2) + 13;
+      const minute = i % 2 === 0 ? "00" : "30";
+      return `${hour}:${minute}`;
+    });
+  }
+
+ 
 
   const isPastDay = (dayIndex) => {
     const today = new Date();
@@ -89,8 +106,27 @@ const App = () => {
       });
   };
 
+
+  useEffect(() => {
+    if (selectedTimezone === "UTC+0") {
+      timeSlots = Array.from({ length: 31 }, (_, i) => {
+        const hour = Math.floor(i / 2) + 8;
+        const minute = i % 2 === 0 ? "00" : "30";
+        return `${hour}:${minute}`;
+      });
+    } else {
+      timeSlots = Array.from({ length: 31 }, (_, i) => {
+        const hour = Math.floor(i / 2) + 13;
+        const minute = i % 2 === 0 ? "00" : "30";
+        return `${hour}:${minute}`;
+      });
+    }
+  }, [selectedTimezone]);
+
   // Fetch events data from the JSON file on component mount
   useEffect(() => {
+
+    
     fetch("http://localhost:3001/data")
       .then((response) => response.json())
       .then((data) => {
@@ -101,14 +137,12 @@ const App = () => {
       });
   }, []);
 
-  // Filter out past events from the displayed events
-  const filteredEventsData = eventsData.filter((event) => {
-    const eventDate = new Date(event.date);
-    return eventDate >= new Date().setHours(0, 0, 0, 0);
-  });
+ 
+
 
   return (
     <div className="app">
+     
       <div className="navigation">
         <button onClick={handlePreviousWeek}>&lt; Previous Week</button>
         <span>{new Date().toDateString()}</span>
@@ -116,10 +150,10 @@ const App = () => {
       </div>
       <div className="timezone">
         <label htmlFor="timezone">Timezone</label>
-        <select id="timezone" value={selectedTimezone} onChange={handleTimezoneChange}>
+        <select id="timezone" value={selectedTimezone} onChange={()=>{console.log('changed')}}>
+          <option value="UTC-0">[UTC+0] Greenwich Mean Time</option>
           <option value="UTC-5">[UTC-5] Eastern Time Zone</option>
-          <option value="UTC+0">[UTC+0] Greenwich Mean Time</option>
-          {/* Add more timezone options here if needed */}
+         
         </select>
       </div>
       <div className="calendar">
