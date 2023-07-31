@@ -39,7 +39,7 @@ const App = () => {
   };
 
   // Array to store the days of the week
-  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const daysOfWeek = [ "Mon", "Tue", "Wed", "Thu", "Fri", "Sat","Sun",];
 
   // Function to determine the time slots based on the selected timezone
   const getTimeSlots = () => {
@@ -84,11 +84,18 @@ const App = () => {
 
   // Function to handle clicking on a time slot checkbox
   const handleCheckboxClick = (dayIndex, slotIndex) => {
-    // Get the selected date and time from the calendar
+    // Get the time slots based on the selected timezone
+    const timeSlots = getTimeSlots();
+  
+    // Calculate the selected date using the currentDate and dayIndex
     const selectedDate = new Date(currentDate);
     selectedDate.setDate(selectedDate.getDate() + dayIndex);
+  
+    // Calculate the correct dayIndex based on the difference between selectedDate and currentDate
+    dayIndex = Math.floor((selectedDate - currentDate) / (24 * 60 * 60 * 1000));
+  
     const selectedTime = timeSlots[slotIndex];
-
+  
     // Create a new event object with the relevant data
     const newEvent = {
       id: `${selectedDate.toDateString()} at ${selectedTime}`.split(" ").join(""), // Assign a unique ID to the new event
@@ -96,10 +103,10 @@ const App = () => {
       time: selectedTime,
       text: `Event${dayIndex} for ${selectedDate.toDateString()} at ${selectedTime}`,
     };
-
+  
     // Update the eventsData state by adding the new event
     setEventsData((prevEvents) => [...prevEvents, newEvent]);
-
+  
     // Send a POST request to add the new event data to the JSON server
     fetch("http://localhost:3001/data", {
       method: "POST",
@@ -116,6 +123,9 @@ const App = () => {
         console.error("Error adding new event:", error);
       });
   };
+  
+  
+  
 
   // Effect hook to fetch events data from the JSON file on component mount
   useEffect(() => {
@@ -158,12 +168,18 @@ const App = () => {
       </div>
       <div className="calendar">
         {daysOfWeek.map((day, dayIndex) => (
-          dayIndex === 0 || dayIndex === 6 ? null : ( // Do not show events for Sundays and Saturdays
+          dayIndex === 5 || dayIndex === 6 ? null : ( // Do not show events for Sundays and Saturdays
             <div key={day}>
               <div className={`day-name ${isPastDay(dayIndex) ? "past-day" : ""}`}>
                 {day} <br />
                 <p>
-                  {new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + dayIndex + 1).toLocaleDateString()}
+                <p>
+    {new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() + (dayIndex-1) + currentDate.getDay()
+    ).toLocaleDateString()}
+  </p>
                 </p>
               </div>
               {isPastDay(dayIndex) ? (<p className="passed-date">Events Already Done*</p>) : (
@@ -179,7 +195,7 @@ const App = () => {
                       <label key={timeSlot}>
                         <input
                           type="checkbox"
-                          id={`day${dayIndex}-slot${slotIndex}`}
+                          id={`day${dayIndex }-slot${slotIndex}`}
                           name={`day${dayIndex}-slot${slotIndex}`}
                           checked={isChecked}
                           onChange={() => handleCheckboxClick(dayIndex, slotIndex)}
